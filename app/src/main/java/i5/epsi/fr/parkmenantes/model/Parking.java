@@ -1,4 +1,4 @@
-package i5.epsi.fr.parkmenantes.i5.epsi.fr.parjmenantes.model;
+package i5.epsi.fr.parkmenantes.model;
 
 /**
  * Created by antoine on 20/01/16.
