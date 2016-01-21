@@ -17,11 +17,19 @@ public class Parking {
     String address;
 
     String libType;
-    int latitude;
-    int longitude;
-    int freePlaces;
+    Double latitude;
+    Double longitude;
+
+    public int getAvailablePlaces() {
+        return availablePlaces;
+    }
+
+    public void setAvailablePlaces(int availablePlaces) {
+        this.availablePlaces = availablePlaces;
+    }
+
+    int availablePlaces;
     int maxPlaces;
-    int busyPlaces;
 
 
 
@@ -31,7 +39,7 @@ public class Parking {
 
     }
 
-    public Parking(String name, int id, int type, int zipCode, String website, String phone, int theme, String commune, String libCategorie, String address, String libType, int latitude, int longitude, int freePlaces, int maxPlaces, int busyPlaces) {
+    public Parking(String name, int id, int type, int zipCode, String website, String phone, int theme, String commune, String libCategorie, String address, String libType, double latitude, double longitude, int freePlaces, int maxPlaces, int busyPlaces) {
         this.name = name;
         this.id = id;
         this.type = type;
@@ -45,9 +53,9 @@ public class Parking {
         this.libType = libType;
         this.latitude = latitude;
         this.longitude = longitude;
-        this.freePlaces = freePlaces;
+        this.availablePlaces = availablePlaces;
         this.maxPlaces = maxPlaces;
-        this.busyPlaces = busyPlaces;
+
     }
 
     public String getName() {
@@ -138,29 +146,22 @@ public class Parking {
         this.libType = libType;
     }
 
-    public int getLatitude() {
+    public Double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(int latitude) {
+    public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
 
-    public int getLongitude() {
+    public Double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(int longitude) {
+    public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
 
-    public int getFreePlaces() {
-        return freePlaces;
-    }
-
-    public void setFreePlaces(int freePlaces) {
-        this.freePlaces = freePlaces;
-    }
 
     public int getMaxPlaces() {
         return maxPlaces;
@@ -170,13 +171,6 @@ public class Parking {
         this.maxPlaces = maxPlaces;
     }
 
-    public int getBusyPlaces() {
-        return busyPlaces;
-    }
-
-    public void setBusyPlaces(int busyPlaces) {
-        this.busyPlaces = busyPlaces;
-    }
 
 
 }
