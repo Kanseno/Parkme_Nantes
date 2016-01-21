@@ -39,7 +39,7 @@ public class MainActivity extends Activity {
         protected String doInBackground(String... params) {
 
             //String URL_CALL = "http://data.nantes.fr/api/publication/24440040400129_NM_NM_00022/LOC_EQUIPUB_MOBILITE_NM_STBL/content?filter={%22CATEGORIE%22:{%22$eq%22:1001}}/?format=json&THEME=10";
-            String URL_CALL = "http://data.nantes.fr/api/getDisponibiliteParkingsPublics/1.0/39W9VSNCSASEOGV/?output=json";
+            String URL_CALL = "http://data.nantes.fr/api/getDisponibiliteParkingsPublics/1.0/0TZIF9VWW3BTCBC/?output=json";
             URL url = null;
             String result = null;
             List<Parking> ParkingList = new ArrayList<Parking>();
