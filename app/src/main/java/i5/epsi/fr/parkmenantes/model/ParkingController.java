@@ -1,4 +1,4 @@
-package i5.epsi.fr.parkmenantes.i5.epsi.fr.parjmenantes.model;
+package i5.epsi.fr.parkmenantes.model;
 
 import java.io.BufferedInputStream;
 import java.io.InputStream;
