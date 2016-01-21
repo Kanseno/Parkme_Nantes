@@ -57,7 +57,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             ParkingList = new ArrayList<Parking>();
             //String URL_CALL = "http://data.nantes.fr/api/publication/24440040400129_NM_NM_00022/LOC_EQUIPUB_MOBILITE_NM_STBL/content?filter={%22CATEGORIE%22:{%22$eq%22:1001}}/?format=json&THEME=10";
-            String URL_CALL = "http://data.nantes.fr/api/getDisponibiliteParkingsPublics/1.0/39W9VSNCSASEOGV/?output=json";
+            String URL_CALL = "http://data.nantes.fr/api/getDisponibiliteParkingsPublics/1.0/0TZIF9VWW3BTCBC/?output=json";
             URL url = null;
             String result = null;
 
@@ -178,7 +178,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
            Log.d("markers", MyParkingList.get(i).getName());
            LatLng pos =new LatLng(MyParkingList.get(i).getLatitude(),MyParkingList.get(i).getLongitude());
 
-           mMap.addMarker(new MarkerOptions().position(pos).title(MyParkingList.get(i).getName()));
+           mMap.addMarker(new MarkerOptions()
+                   .position(pos)
+                   .title(MyParkingList.get(i).getName())
+                   .snippet("Places disponibles : " + MyParkingList.get(i).getAvailablePlaces())
+           );
+
        }
 
 
@@ -188,6 +193,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         );
         //mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(nantes));
+        mMap.moveCamera(CameraUpdateFactory.zoomTo(14));
+
 
         } catch (InterruptedException e) {
             e.printStackTrace();
