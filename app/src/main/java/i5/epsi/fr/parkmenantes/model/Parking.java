@@ -32,8 +32,6 @@ public class Parking {
     int maxPlaces;
 
 
-
-
     public Parking(){
         super();
 
