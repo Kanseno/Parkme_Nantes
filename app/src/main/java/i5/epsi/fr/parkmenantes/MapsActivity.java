@@ -94,22 +94,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 .snippet("Places Maximales : " + MyParkingList.get(i).getMaxPlaces())
                                 .icon(BitmapDescriptorFactory.fromBitmap(writeTextOnDrawable(drawable, "" + MyParkingList.get(i).getAvailablePlaces())))
                 );
-                mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
                     @Override
-                    public boolean onMarkerClick(Marker marker) {
+                    public void onInfoWindowClick(Marker marker) {
                         Intent intent = new Intent(MapsActivity.this, ParkingDetailsActivity.class);
 
                         for(int i = 0; i < MyParkingList.size(); i++) {
                             if(MyParkingList.get(i).getName().equals(marker.getTitle())) {
                                 Bundle extras = new Bundle();
-                                extras.putString("parking", MyParkingList.get(i).toString());
+                                extras.putString("parking", MyParkingList.get(i).getName());
                                 intent.putExtras(extras);
                                 startActivity(intent);
                             }
                         }
 
-
-                        return false;
                     }
                 });
             }

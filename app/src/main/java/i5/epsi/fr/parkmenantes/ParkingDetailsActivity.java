@@ -17,16 +17,11 @@ public class ParkingDetailsActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
-        Log.d("bundle pd", String.valueOf(this.getIntent().getExtras()));
+        Bundle extras = new Bundle();
+        extras = this.getIntent().getExtras();
+        String test = extras.getString("parking");
+        Log.d("bundle pd", test);
     }
 
 }
