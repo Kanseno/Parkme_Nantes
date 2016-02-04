@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">ParkMeNantes</string>
     <string name="title_activity_maps">Map</string>
+    <string name="title_activity_parking_details">ParkingDetailsActivity</string>
 </resources>
