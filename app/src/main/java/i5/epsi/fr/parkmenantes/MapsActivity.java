@@ -1,6 +1,7 @@
 package i5.epsi.fr.parkmenantes;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -9,8 +10,11 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.View;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -18,6 +22,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.List;
@@ -42,6 +47,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
     }
 
 
@@ -62,7 +76,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.moveCamera(CameraUpdateFactory.newLatLng(nantes));
         mMap.moveCamera(CameraUpdateFactory.zoomTo(14));
         try {
-            List<Parking> MyParkingList = new GetParkings().execute("").get();
+            final List<Parking> MyParkingList = new GetParkings().execute("").get();
             for(int i = 0; i < MyParkingList.size(); i++){
                 Log.d("markers", MyParkingList.get(i).getName());
                 LatLng pos =new LatLng(MyParkingList.get(i).getLatitude(),MyParkingList.get(i).getLongitude());
@@ -80,7 +94,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 .snippet("Places Maximales : " + MyParkingList.get(i).getMaxPlaces())
                                 .icon(BitmapDescriptorFactory.fromBitmap(writeTextOnDrawable(drawable, "" + MyParkingList.get(i).getAvailablePlaces())))
                 );
+                mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                    @Override
+                    public boolean onMarkerClick(Marker marker) {
+                        Intent intent = new Intent(MapsActivity.this, ParkingDetailsActivity.class);
 
+                        for(int i = 0; i < MyParkingList.size(); i++) {
+                            if(MyParkingList.get(i).getName().equals(marker.getTitle())) {
+                                Bundle extras = new Bundle();
+                                extras.putString("parking", MyParkingList.get(i).toString());
+                                intent.putExtras(extras);
+                                startActivity(intent);
+                            }
+                        }
+
+
+                        return false;
+                    }
+                });
             }
 
         } catch (InterruptedException | ExecutionException e) {
