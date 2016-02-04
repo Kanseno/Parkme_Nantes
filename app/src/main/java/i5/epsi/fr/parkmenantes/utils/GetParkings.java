@@ -9,11 +9,9 @@ import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -71,6 +69,7 @@ public class GetParkings extends AsyncTask<String, Void, List<Parking>> {
                     park.setId(Integer.parseInt(oneObject.getString("IdObj")));
                     park.setName(oneObject.getString("Grp_nom"));
                     park.setAvailablePlaces(Integer.parseInt(oneObject.getString("Grp_disponible")));
+                    park.setMaxPlaces(Integer.parseInt(oneObject.getString("Grp_exploitation")));
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -121,11 +120,10 @@ public class GetParkings extends AsyncTask<String, Void, List<Parking>> {
             InputStream in = new BufferedInputStream(urlConnection.getInputStream());
             BufferedReader r = new BufferedReader(new InputStreamReader(in));
 
-            urlConnection.disconnect();
-
             while ((line = r.readLine()) != null) {
                 str.append(line).append("\n");
             }
+            urlConnection.disconnect();
         }
         catch (Exception e) {
             e.printStackTrace();
