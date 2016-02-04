@@ -35,7 +35,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
+        Log.i("coucou", "coucou");
         final Button button = (Button) findViewById(R.id.btn_for_map_activity);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
