@@ -29,11 +29,11 @@ public class GetParkings extends AsyncTask<String, Void, List<Parking>> {
     protected List<Parking> doInBackground(String... params) {
         parkingList = new ArrayList<>();
         //String URL_CALL = "http://data.nantes.fr/api/publication/24440040400129_NM_NM_00022/LOC_EQUIPUB_MOBILITE_NM_STBL/content?filter={%22CATEGORIE%22:{%22$eq%22:1001}}/?format=json&THEME=10";
-        String URL_CALL = "http://data.nantes.fr/api/getDisponibiliteParkingsPublics/1.0/0TZIF9VWW3BTCBC/?output=json";
-        this.parkingList = getDisponibiliteParking(URL_CALL);
+        String urlDispoParking = Constantes.URL_DISPO_PARKING;
+        this.parkingList = getDisponibiliteParking(urlDispoParking);
 
-        String URL_LOCATION_DATA = "http://data.nantes.fr/api/publication/24440040400129_NM_NM_00022/LOC_EQUIPUB_MOBILITE_NM_STBL/content";
-        this.parkingList = getPositionParking(URL_LOCATION_DATA);
+        String urlLocationEquipement = Constantes.URL_LOCATION_EQUIPEMENT;
+        this.parkingList = getPositionParking(urlLocationEquipement);
 
         return parkingList;
     }
@@ -48,17 +48,17 @@ public class GetParkings extends AsyncTask<String, Void, List<Parking>> {
     }
 
 
-    public List<Parking> getDisponibiliteParking(String URL_CALL) {
-        String res = getDataFrom(URL_CALL);
+    public List<Parking> getDisponibiliteParking(String urlDispoParking) {
+        String res = getDataFrom(urlDispoParking);
 
         try {
             Log.d("res", res);
             JSONObject jsonResp = new JSONObject(res);
-            JSONObject opendata = jsonResp.getJSONObject("opendata");
-            JSONObject answer = opendata.getJSONObject("answer");
-            JSONObject data = answer.getJSONObject("data");
-            JSONObject parkingGroups = data.getJSONObject("Groupes_Parking");
-            JSONArray parkingGroupArray = parkingGroups.getJSONArray("Groupe_Parking");
+            JSONObject opendata = jsonResp.getJSONObject(Constantes.OPENDATA);
+            JSONObject answer = opendata.getJSONObject(Constantes.ANSWER);
+            JSONObject data = answer.getJSONObject(Constantes.DATA);
+            JSONObject parkingGroups = data.getJSONObject(Constantes.GROUPES_PARKING);
+            JSONArray parkingGroupArray = parkingGroups.getJSONArray(Constantes.GROUPE_PARKING);
 
 
             for (int i = 0; i < parkingGroupArray.length(); i++) {
@@ -66,10 +66,10 @@ public class GetParkings extends AsyncTask<String, Void, List<Parking>> {
                 try {
                     JSONObject oneObject = parkingGroupArray.getJSONObject(i);
 
-                    park.setId(Integer.parseInt(oneObject.getString("IdObj")));
-                    park.setName(oneObject.getString("Grp_nom"));
-                    park.setAvailablePlaces(Integer.parseInt(oneObject.getString("Grp_disponible")));
-                    park.setMaxPlaces(Integer.parseInt(oneObject.getString("Grp_exploitation")));
+                    park.setId(Integer.parseInt(oneObject.getString(Constantes.ID_OBJET)));
+                    park.setName(oneObject.getString(Constantes.PARKING_NAME));
+                    park.setAvailablePlaces(Integer.parseInt(oneObject.getString(Constantes.PARKING_PLACES_DISPO)));
+                    park.setMaxPlaces(Integer.parseInt(oneObject.getString(Constantes.PARKING_MAX_PLACES)));
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -86,16 +86,16 @@ public class GetParkings extends AsyncTask<String, Void, List<Parking>> {
         return parkingList;
     }
 
-    public List<Parking> getPositionParking(String URL_LOCATION_DATA) {
+    public List<Parking> getPositionParking(String urlLocationEquipement) {
         String result;
 
         for (int i = 0; i < parkingList.size(); i++) {
             try {
-                result = getDataFrom(URL_LOCATION_DATA + "?filter={%22_IDOBJ%22:{%22$eq%22:" + parkingList.get(i).getId() + "}}/?format=json");
+                result = getDataFrom(urlLocationEquipement + Constantes.FILTER1 + parkingList.get(i).getId() + Constantes.FILTER2);
 
                 Log.d("Result", result);
                 JSONObject jsonResp = new JSONObject(result);
-                JSONArray parkingData = jsonResp.getJSONArray("data");
+                JSONArray parkingData = jsonResp.getJSONArray(Constantes.DATA);
                 JSONObject parkingObject = parkingData.getJSONObject(0);
                 JSONArray locationInf = parkingObject.getJSONArray("_l");
                 parkingList.get(i).setLatitude(locationInf.getDouble(0));
@@ -111,7 +111,7 @@ public class GetParkings extends AsyncTask<String, Void, List<Parking>> {
 
     private String getDataFrom(String fromUrl) {
         StringBuilder str = new StringBuilder();
-        String line = "";
+        String line;
 
         try {
             URL url = new URL(fromUrl);

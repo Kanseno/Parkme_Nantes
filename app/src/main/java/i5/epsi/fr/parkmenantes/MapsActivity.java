@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import i5.epsi.fr.parkmenantes.model.Parking;
+import i5.epsi.fr.parkmenantes.utils.Constantes;
 import i5.epsi.fr.parkmenantes.utils.GetParkings;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -91,8 +92,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 mMap.addMarker(new MarkerOptions()
                                 .position(pos)
                                 .title(MyParkingList.get(i).getName())
-                                .snippet("Places Maximales : " + MyParkingList.get(i).getMaxPlaces())
-                                .icon(BitmapDescriptorFactory.fromBitmap(writeTextOnDrawable(drawable, "" + MyParkingList.get(i).getAvailablePlaces())))
+                                .snippet(Constantes.SNIPPET_PLACES_MAX + Constantes.COLON + MyParkingList.get(i).getMaxPlaces())
+                                .icon(BitmapDescriptorFactory.fromBitmap(writeTextOnDrawable(drawable, Constantes.EMPTY + MyParkingList.get(i).getAvailablePlaces())))
                 );
                 mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
                     @Override
