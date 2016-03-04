@@ -38,7 +38,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     int drawable;
     private GoogleMap mMap;
-    public List<Parking> ParkingList;
+    List<Parking> MyParkingList = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,13 +73,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        boolean fromSearch = false;
         mMap = googleMap;
 
         LatLng nantes = new LatLng(47.2172500, -1.5533600);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(nantes));
         mMap.moveCamera(CameraUpdateFactory.zoomTo(14));
         try {
-            final List<Parking> MyParkingList = new GetParkings().execute("").get();
+            if(!fromSearch) {
+                MyParkingList = new GetParkings().execute("").get();
+            }
             for(int i = 0; i < MyParkingList.size(); i++){
                 Log.d("markers", MyParkingList.get(i).getName());
                 LatLng pos =new LatLng(MyParkingList.get(i).getLatitude(),MyParkingList.get(i).getLongitude());
@@ -102,15 +105,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     public void onInfoWindowClick(Marker marker) {
                         Intent intent = new Intent(MapsActivity.this, ScrollingActivity.class);
 
-                        for(int i = 0; i < MyParkingList.size(); i++) {
-                            if(MyParkingList.get(i).getName().equals(marker.getTitle())) {
+//                        for(int i = 0; i < MyParkingList.size(); i++) {
+//                            if(MyParkingList.get(i).getName().equals(marker.getTitle())) {
 
                                 Gson gson = new Gson();
-                                String json = gson.toJson(MyParkingList.get(i));
-                                intent.putExtra("parking",json);
+                                String json = gson.toJson(MyParkingList);
+                                intent.putExtra("parkings",json);
                                 startActivity(intent);
-                            }
-                        }
+//                            }
+//                        }
+
 
                     }
                 });

@@ -3,6 +3,8 @@ package i5.epsi.fr.parkmenantes.utils;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.google.gson.Gson;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -130,5 +132,33 @@ public class GetParkings extends AsyncTask<String, Void, List<Parking>> {
         }
 
         return str.toString();
+    }
+
+   // {"latitude":47.2049704647258,"longitude":-1.54433295436521,"name":"LES FONDERIES","availablePlaces":76,"id":4319,"maxPlaces":120,"theme":0,"type":0,"zipCode":0}
+    public static List<Parking> jsonToParking(String json) {
+        Parking parkingTmp = new Parking();
+        List<Parking> listParking = new ArrayList<>();
+
+        JSONArray jsonArray = null;
+        try {
+            jsonArray = new JSONArray(json);
+
+            for(int i = 0; i <= jsonArray.length(); i++){
+                JSONObject row = jsonArray.getJSONObject(i);
+
+                parkingTmp.setLatitude(row.getDouble("latitude"));
+                parkingTmp.setLongitude(row.getDouble("longitude"));
+                parkingTmp.setName(row.getString("name"));
+                parkingTmp.setAvailablePlaces(row.getInt("availablePlaces"));
+                parkingTmp.setId(row.getInt("id"));
+                parkingTmp.setMaxPlaces(row.getInt("maxPlaces"));
+
+                listParking.add(parkingTmp);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return listParking;
     }
 }
