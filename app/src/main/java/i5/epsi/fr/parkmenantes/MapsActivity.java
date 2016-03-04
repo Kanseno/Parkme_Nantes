@@ -24,7 +24,9 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.gson.Gson;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -98,13 +100,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
                     @Override
                     public void onInfoWindowClick(Marker marker) {
-                        Intent intent = new Intent(MapsActivity.this, ParkingDetailsActivity.class);
+                        Intent intent = new Intent(MapsActivity.this, ScrollingActivity.class);
 
                         for(int i = 0; i < MyParkingList.size(); i++) {
                             if(MyParkingList.get(i).getName().equals(marker.getTitle())) {
-                                Bundle extras = new Bundle();
-                                extras.putString("parking", MyParkingList.get(i).getName());
-                                intent.putExtras(extras);
+
+                                Gson gson = new Gson();
+                                String json = gson.toJson(MyParkingList.get(i));
+                                intent.putExtra("parking",json);
                                 startActivity(intent);
                             }
                         }
