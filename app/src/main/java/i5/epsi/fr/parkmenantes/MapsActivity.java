@@ -51,14 +51,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        final Intent intent = new Intent(MapsActivity.this, SearchActivity.class);
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Gson gson = new Gson();
+                String json = gson.toJson(MyParkingList);
+                intent.putExtra("parkings", json);
+                startActivity(intent);
             }
         });
+
     }
 
 
@@ -105,17 +110,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     public void onInfoWindowClick(Marker marker) {
                         Intent intent = new Intent(MapsActivity.this, ScrollingActivity.class);
 
-//                        for(int i = 0; i < MyParkingList.size(); i++) {
-//                            if(MyParkingList.get(i).getName().equals(marker.getTitle())) {
+                        for(int i = 0; i < MyParkingList.size(); i++) {
+                            if(MyParkingList.get(i).getName().equals(marker.getTitle())) {
 
                                 Gson gson = new Gson();
-                                String json = gson.toJson(MyParkingList);
-                                intent.putExtra("parkings",json);
+                                String json = gson.toJson(MyParkingList.get(i));
+                                intent.putExtra("parking",json);
                                 startActivity(intent);
-//                            }
-//                        }
-
-
+                            }
+                        }
                     }
                 });
             }
